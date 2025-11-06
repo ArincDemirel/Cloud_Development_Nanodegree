@@ -141,7 +141,7 @@ The application has been tested with various image sources:
 
 **Live Deployment URL:** http://image-filter-api-env.eba-z29euxpi.us-east-1.elasticbeanstalk.com
 
-**Deployment Screenshot:** See `deployment_screenshot.png` in the project root for Elastic Beanstalk dashboard screenshot.
+**Deployment Screenshot:** See `deployment_screenshot/deployment_screenshot.png` for Elastic Beanstalk dashboard screenshot showing the application is healthy and deployed successfully.
 
 ### Deployment Details
 
@@ -174,7 +174,8 @@ Body: {"image_url": "https://picsum.photos/400/400"}
 │   └── util/
 │       ├── util.js            # Image filtering utilities
 │       └── uploadImageToS3bucket.js  # S3 upload utilities
-├── deployment_screenshot.png   # Screenshot of EB dashboard
+├── deployment_screenshot/      # Screenshot of EB dashboard
+│   └── deployment_screenshot.png
 ├── README.md
 └── LICENSE.txt
 ```

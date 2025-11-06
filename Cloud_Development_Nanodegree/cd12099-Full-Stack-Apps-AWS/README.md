@@ -19,6 +19,8 @@ This project was **forked from and improved upon** the original `cd12099-Full-St
 - ✅ Deployed to AWS Elastic Beanstalk with proper configuration
 - ✅ Added comprehensive error handling and validation
 - ✅ Improved image download function with redirect support and headers
+- ✅ Fixed Jimp.read() errors by using axios to fetch images as buffers
+- ✅ Added axios package for reliable image downloading with proper headers
 
 ## Project Description
 
@@ -125,9 +127,41 @@ curl -X POST "$EB_URL/upload" \
 curl "$EB_URL/filteredimage?image_url=https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg" -o test_kitten.jpg
 ```
 
+### Tested Image URLs
+
+The application has been tested with various image sources:
+
+- ✅ **Picsum Photos**: `https://picsum.photos/400/400`
+- ✅ **Wikimedia Commons**: `https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg`
+- ✅ **Unsplash**: `https://images.unsplash.com/photo-1506905925346-21bda4d32df4`
+- ✅ **PNG Images**: Supports PNG and converts to JPEG
+- ✅ All image formats work with both `/filteredimage` and `/upload` endpoints
+
 ## Deployment
 
-**Live URL:** http://image-filter-api-env.eba-z29euxpi.us-east-1.elasticbeanstalk.com
+**Live Deployment URL:** http://image-filter-api-env.eba-z29euxpi.us-east-1.elasticbeanstalk.com
+
+**Deployment Screenshot:** See `deployment_screenshot.png` in the project root for Elastic Beanstalk dashboard screenshot.
+
+### Deployment Details
+
+- **Platform:** Node.js 20 running on 64bit Amazon Linux 2023
+- **Region:** us-east-1
+- **Deployment Method:** AWS Elastic Beanstalk CLI (eb init, eb create, eb deploy)
+- **Status:** Successfully deployed and tested
+
+### Test URLs
+
+**Filtered Image Endpoint:**
+```
+http://image-filter-api-env.eba-z29euxpi.us-east-1.elasticbeanstalk.com/filteredimage?image_url=https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg
+```
+
+**Upload Endpoint:**
+```
+POST http://image-filter-api-env.eba-z29euxpi.us-east-1.elasticbeanstalk.com/upload
+Body: {"image_url": "https://picsum.photos/400/400"}
+```
 
 ## Project Structure
 
@@ -150,6 +184,7 @@ curl "$EB_URL/filteredimage?image_url=https://upload.wikimedia.org/wikipedia/com
 - **Node.js** - Runtime environment
 - **Express.js** - Web framework
 - **Jimp** - Image processing library
+- **Axios** - HTTP client for fetching images as buffers
 - **AWS SDK** - S3 integration
 - **AWS Elastic Beanstalk** - Deployment platform
 - **AWS S3** - Object storage

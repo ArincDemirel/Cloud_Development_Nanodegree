@@ -3,8 +3,10 @@ import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util.js';
 import { uploadToS3 } from './util/uploadImageToS3bucket.js';
 import https from 'https';
+import http from 'http';
 import fs from 'fs';
-import Jimp from 'jimp';  // Add this line
+import Jimp from 'jimp';
+import axios from 'axios';
 // Init the Express application
 const app = express();
 
@@ -116,13 +118,20 @@ app.post("/upload", async (req, res) => {
       return res.status(400).send("Error: image_url must be a valid URL");
     }
 
-    // Use Jimp to download and process both images (more reliable than manual download)
-    // Download original image using Jimp
-    const originalJimp = await Jimp.read(image_url);
+    // Fetch image using axios with responseType as buffer
+    const response = await axios.get(image_url, {
+      responseType: 'arraybuffer',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      }
+    });
+
+    // Convert buffer to Jimp image for original
+    const originalJimp = await Jimp.read(response.data);
     const originalPath = `/tmp/original.${Math.floor(Math.random() * 2000)}.jpg`;
     await originalJimp.writeAsync(originalPath);
 
-    // Filter the image (this already works)
+    // Filter the image (uses axios internally)
     const filteredPath = await filterImageFromURL(image_url);
 
     // Upload original to S3 /images folder
